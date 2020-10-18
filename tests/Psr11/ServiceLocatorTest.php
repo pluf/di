@@ -55,6 +55,7 @@ class ServiceLocatorTest extends TestCase
         ]);
 
         $service = $locator->get('service');
+        return $service;
     }
 
     public function testGetValidatesServiceCanBeLocated()
@@ -71,6 +72,7 @@ class ServiceLocatorTest extends TestCase
         ]);
 
         $service = $locator->get('foo');
+        return $service;
     }
 
     public function testGetValidatesTargetServiceExists()
@@ -87,6 +89,7 @@ class ServiceLocatorTest extends TestCase
         ]);
 
         $service = $locator->get('alias');
+        return $service;
     }
 
     public function testHasValidatesServiceCanBeLocated()
