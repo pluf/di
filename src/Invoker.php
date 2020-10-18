@@ -13,7 +13,9 @@ use Psr\Container\ContainerInterface;
 
 /**
  * Invoke a callable.
- *
+ * 
+ * Parameters may resolve with deffirent methods such as Container resolver.
+ * 
  * @author Mostafa Barmshory<mostafa.barmshory@gmail.com>
  */
 class Invoker

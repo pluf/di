@@ -109,8 +109,12 @@ class Container implements ArrayAccess, ContainerInterface
      */
     public function offsetGet($id)
     {
+        // Check if factory exist
         if (! isset($this->keys[$id])) {
-            // TODO: maso, 2020: fetch from parent
+            // maso, 2020: fetch from parent
+            if (isset($this->parent)) {
+                return $this->parent[$id];
+            }
             throw new UnknownIdentifierException($id);
         }
 

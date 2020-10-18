@@ -5,7 +5,6 @@ use PHPUnit\Framework\TestCase;
 use Pluf\Di\Container;
 use Pluf\Di\Exception\ExpectedInvokableException;
 use Pluf\Di\Exception\FrozenServiceException;
-use Pluf\Di\Exception\InvalidServiceIdentifierException;
 use Pluf\Di\Exception\UnknownIdentifierException;
 
 /**
@@ -326,7 +325,7 @@ class ContainerTest extends TestCase
     public function testFactoryFailsForInvalidServiceDefinitions($service)
     {
         $this->expectException(ExpectedInvokableException::class);
-//         $this->expectExceptionMessage('Service definition is not a Closure or invokable object.');
+        // $this->expectExceptionMessage('Service definition is not a Closure or invokable object.');
 
         $container = new Container();
         $container['key'] = $service;
@@ -341,7 +340,7 @@ class ContainerTest extends TestCase
     public function testLegacyFactoryFailsForInvalidServiceDefinitions($service)
     {
         $this->expectException(\InvalidArgumentException::class);
-//         $this->expectExceptionMessage('Service definition is not a Closure or invokable object.');
+        // $this->expectExceptionMessage('Service definition is not a Closure or invokable object.');
 
         $container = new Container();
         $container['key'] = $service;
@@ -355,7 +354,7 @@ class ContainerTest extends TestCase
     public function testProtectFailsForInvalidServiceDefinitions($service)
     {
         $this->expectException(ExpectedInvokableException::class);
-//         $this->expectExceptionMessage('Factory is not a Closure or invokable object.');
+        // $this->expectExceptionMessage('Factory is not a Closure or invokable object.');
 
         $container = new Container();
         $container['key'] = $service;
@@ -370,117 +369,117 @@ class ContainerTest extends TestCase
     public function testLegacyProtectFailsForInvalidServiceDefinitions($service)
     {
         $this->expectException(\InvalidArgumentException::class);
-//         $this->expectExceptionMessage('Callable is not a Closure or invokable object.');
-        
+        // $this->expectExceptionMessage('Callable is not a Closure or invokable object.');
+
         $container = new Container();
         $container['key'] = $service;
         return $container;
     }
 
-//     /**
-//      *
-//      * @dataProvider badServiceDefinitionProvider
-//      */
-//     public function testExtendFailsForKeysNotContainingServiceDefinitions($service)
-//     {
-//         $this->expectException(InvalidServiceIdentifierException::class);
-//         $this->expectExceptionMessage('Identifier "foo" does not contain an object definition.');
+    // /**
+    // *
+    // * @dataProvider badServiceDefinitionProvider
+    // */
+    // public function testExtendFailsForKeysNotContainingServiceDefinitions($service)
+    // {
+    // $this->expectException(InvalidServiceIdentifierException::class);
+    // $this->expectExceptionMessage('Identifier "foo" does not contain an object definition.');
 
-//         $container = new Container();
-//         $container['foo'] = $service;
-//         $container->extend('foo', function () {});
-//     }
+    // $container = new Container();
+    // $container['foo'] = $service;
+    // $container->extend('foo', function () {});
+    // }
 
-//     /**
-//      *
-//      * @group legacy
-//      * @dataProvider badServiceDefinitionProvider
-//      */
-//     public function testLegacyExtendFailsForKeysNotContainingServiceDefinitions($service)
-//     {
-//         $this->expectException(\InvalidArgumentException::class);
-//         $this->expectExceptionMessage('Identifier "foo" does not contain an object definition.');
+    // /**
+    // *
+    // * @group legacy
+    // * @dataProvider badServiceDefinitionProvider
+    // */
+    // public function testLegacyExtendFailsForKeysNotContainingServiceDefinitions($service)
+    // {
+    // $this->expectException(\InvalidArgumentException::class);
+    // $this->expectExceptionMessage('Identifier "foo" does not contain an object definition.');
 
-//         $container = new Container();
-//         $container['foo'] = $service;
-//         $container->extend('foo', function () {});
-//     }
+    // $container = new Container();
+    // $container['foo'] = $service;
+    // $container->extend('foo', function () {});
+    // }
 
-//     /**
-//      *
-//      * @group legacy
-//      * @expectedDeprecation How Pimple behaves when extending protected closures will be fixed in Pimple 4. Are you sure "foo" should be protected?
-//      */
-//     public function testExtendingProtectedClosureDeprecation()
-//     {
-//         $container = new Container();
-//         $container['foo'] = $container->protect(function () {
-//             return 'bar';
-//         });
+    // /**
+    // *
+    // * @group legacy
+    // * @expectedDeprecation How Pimple behaves when extending protected closures will be fixed in Pimple 4. Are you sure "foo" should be protected?
+    // */
+    // public function testExtendingProtectedClosureDeprecation()
+    // {
+    // $container = new Container();
+    // $container['foo'] = $container->protect(function () {
+    // return 'bar';
+    // });
 
-//         $container->extend('foo', function ($value) {
-//             return $value . '-baz';
-//         });
+    // $container->extend('foo', function ($value) {
+    // return $value . '-baz';
+    // });
 
-//         $this->assertSame('bar-baz', $container['foo']);
-//     }
+    // $this->assertSame('bar-baz', $container['foo']);
+    // }
 
-//     /**
-//      *
-//      * @dataProvider badServiceDefinitionProvider
-//      */
-//     public function testExtendFailsForInvalidServiceDefinitions($service)
-//     {
-//         $this->expectException(ExpectedInvokableException::class);
-//         $this->expectExceptionMessage('Extension service definition is not a Closure or invokable object.');
+    // /**
+    // *
+    // * @dataProvider badServiceDefinitionProvider
+    // */
+    // public function testExtendFailsForInvalidServiceDefinitions($service)
+    // {
+    // $this->expectException(ExpectedInvokableException::class);
+    // $this->expectExceptionMessage('Extension service definition is not a Closure or invokable object.');
 
-//         $container = new Container();
-//         $container['foo'] = function () {};
-//         $container->extend('foo', $service);
-//     }
+    // $container = new Container();
+    // $container['foo'] = function () {};
+    // $container->extend('foo', $service);
+    // }
 
-//     /**
-//      *
-//      * @group legacy
-//      * @dataProvider badServiceDefinitionProvider
-//      */
-//     public function testLegacyExtendFailsForInvalidServiceDefinitions($service)
-//     {
-//         $this->expectException(\InvalidArgumentException::class);
-//         $this->expectExceptionMessage('Extension service definition is not a Closure or invokable object.');
+    // /**
+    // *
+    // * @group legacy
+    // * @dataProvider badServiceDefinitionProvider
+    // */
+    // public function testLegacyExtendFailsForInvalidServiceDefinitions($service)
+    // {
+    // $this->expectException(\InvalidArgumentException::class);
+    // $this->expectExceptionMessage('Extension service definition is not a Closure or invokable object.');
 
-//         $container = new Container();
-//         $container['foo'] = function () {};
-//         $container->extend('foo', $service);
-//     }
+    // $container = new Container();
+    // $container['foo'] = function () {};
+    // $container->extend('foo', $service);
+    // }
 
-//     public function testExtendFailsIfFrozenServiceIsNonInvokable()
-//     {
-//         $this->expectException(FrozenServiceException::class);
-//         $this->expectExceptionMessage('Cannot override frozen service "foo".');
+    // public function testExtendFailsIfFrozenServiceIsNonInvokable()
+    // {
+    // $this->expectException(FrozenServiceException::class);
+    // $this->expectExceptionMessage('Cannot override frozen service "foo".');
 
-//         $container = new Container();
-//         $container['foo'] = function () {
-//             return new Fixtures\NonInvokable();
-//         };
-//         $foo = $container['foo'];
+    // $container = new Container();
+    // $container['foo'] = function () {
+    // return new Fixtures\NonInvokable();
+    // };
+    // $foo = $container['foo'];
 
-//         $container->extend('foo', function () {});
-//     }
+    // $container->extend('foo', function () {});
+    // }
 
-//     public function testExtendFailsIfFrozenServiceIsInvokable()
-//     {
-//         $this->expectException(FrozenServiceException::class);
-//         $this->expectExceptionMessage('Cannot override frozen service "foo".');
+    // public function testExtendFailsIfFrozenServiceIsInvokable()
+    // {
+    // $this->expectException(FrozenServiceException::class);
+    // $this->expectExceptionMessage('Cannot override frozen service "foo".');
 
-//         $container = new Container();
-//         $container['foo'] = function () {
-//             return new Fixtures\Invokable();
-//         };
-//         $foo = $container['foo'];
+    // $container = new Container();
+    // $container['foo'] = function () {
+    // return new Fixtures\Invokable();
+    // };
+    // $foo = $container['foo'];
 
-//         $container->extend('foo', function () {});
-//     }
+    // $container->extend('foo', function () {});
+    // }
 
     /**
      * Provider for invalid service definitions.
@@ -524,6 +523,7 @@ class ContainerTest extends TestCase
             return 'foo';
         };
         $foo = $container['foo'];
+        $this->assertNotNull($foo);
 
         $container['bar'] = function () {
             return 'bar';
@@ -541,6 +541,7 @@ class ContainerTest extends TestCase
             return 'foo';
         };
         $foo = $container['foo'];
+        $this->assertNotNull($foo);
 
         $container['foo'] = function () {
             return 'bar';
@@ -561,6 +562,7 @@ class ContainerTest extends TestCase
             return 'foo';
         };
         $foo = $container['foo'];
+        $this->assertNotNull($foo);
 
         $container['foo'] = function () {
             return 'bar';
@@ -574,6 +576,7 @@ class ContainerTest extends TestCase
             return 'foo';
         };
         $foo = $container['foo'];
+        $this->assertNotNull($foo);
 
         unset($container['foo']);
         $container['foo'] = function () {
@@ -582,35 +585,84 @@ class ContainerTest extends TestCase
         $this->assertSame('bar', $container['foo']);
     }
 
-//     public function testExtendingService()
-//     {
-//         $container = new Container();
-//         $container['foo'] = function () {
-//             return 'foo';
-//         };
-//         $container['foo'] = $container->extend('foo', function ($foo, $app) {
-//             return "$foo.bar";
-//         });
-//         $container['foo'] = $container->extend('foo', function ($foo, $app) {
-//             return "$foo.baz";
-//         });
-//         $this->assertSame('foo.bar.baz', $container['foo']);
-//     }
+    // public function testExtendingService()
+    // {
+    // $container = new Container();
+    // $container['foo'] = function () {
+    // return 'foo';
+    // };
+    // $container['foo'] = $container->extend('foo', function ($foo, $app) {
+    // return "$foo.bar";
+    // });
+    // $container['foo'] = $container->extend('foo', function ($foo, $app) {
+    // return "$foo.baz";
+    // });
+    // $this->assertSame('foo.bar.baz', $container['foo']);
+    // }
 
-//     public function testExtendingServiceAfterOtherServiceFreeze()
-//     {
-//         $container = new Container();
-//         $container['foo'] = function () {
-//             return 'foo';
-//         };
-//         $container['bar'] = function () {
-//             return 'bar';
-//         };
-//         $foo = $container['foo'];
+    // public function testExtendingServiceAfterOtherServiceFreeze()
+    // {
+    // $container = new Container();
+    // $container['foo'] = function () {
+    // return 'foo';
+    // };
+    // $container['bar'] = function () {
+    // return 'bar';
+    // };
+    // $foo = $container['foo'];
 
-//         $container['bar'] = $container->extend('bar', function ($bar, $app) {
-//             return "$bar.baz";
-//         });
-//         $this->assertSame('bar.baz', $container['bar']);
-//     }
+    // $container['bar'] = $container->extend('bar', function ($bar, $app) {
+    // return "$bar.baz";
+    // });
+    // $this->assertSame('bar.baz', $container['bar']);
+    // }
+
+    /**
+     * Use multilevel contaienr
+     *
+     * @test
+     */
+    public function testMultilevelContainer()
+    {
+        $root = new Container();
+        $container = new Container($root);
+
+        $root['foo'] = function () {
+            return 'foo';
+        };
+        $container['bar'] = function () {
+            return 'bar';
+        };
+
+        $this->assertSame('foo', $container['foo']);
+        $this->assertSame('bar', $container['bar']);
+    }
+
+    /**
+     * Use multilevel contaienr
+     *
+     * @test
+     */
+    public function testMultilevelContainerOverrid()
+    {
+        $root = new Container();
+        $container = new Container($root);
+
+        $root['foo'] = function () {
+            return 'foo';
+        };
+
+        $root['foo'] = function () {
+            return 'foo';
+        };
+        $container['foo'] = function () {
+            return 'foo2';
+        };
+        $container['bar'] = function () {
+            return 'bar';
+        };
+
+        $this->assertSame('foo2', $container['foo']);
+        $this->assertSame('bar', $container['bar']);
+    }
 }
