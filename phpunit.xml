@@ -23,7 +23,7 @@
 			target=".build/clover.xml"/>
 		<log 
 			type="coverage-html"
-			target=".build/coverage.html"/>
+			target=".build/coverage"/>
     </logging>
 </phpunit>
 
