@@ -1,0 +1,40 @@
+{
+	"name" : "pluf/di",
+	"description" : "Pluf DI library",
+	"type" : "library",
+	"homepage" : "https://github.com/pluf/di",
+	"license" : "GPL-3.0-with-GCC-exception",
+	"authors" : [{
+			"name" : "Mostafa Barmshory",
+			"email" : "mostafa.barmshory@gmail.com",
+			"role" : "author",
+			"homepage" : "https://viraweb123.ir"
+		}
+	],
+	"support" : {
+		"email" : "info@pluf.ir",
+		"issues" : "https://github.com/pluf/di/issues",
+		"source" : "https://github.com/pluf/di",
+		"wiki" : "https://github.com/pluf/di/wiki"
+	},
+	"keywords" : [
+		"pluf",
+		"di"
+	],
+	"autoload" : {
+		"psr-4" : {
+			"Pluf\\Di\\" : "src"
+		}
+	},
+	"autoload-dev" : {
+		"psr-4" : {
+			"Pluf\\Tests\\" : "tests"
+		}
+	},
+	"require" : {
+		"psr/container" : "1.*"
+	},
+	"require-dev" : {
+		"phpunit/phpunit" : "~7.5"
+	}
+}
