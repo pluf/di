@@ -53,7 +53,7 @@ class Container implements ArrayAccess, ContainerInterface
      * @param array $values
      *            The parameters or objects
      */
-    public function __construct(?Container $parent = null)
+    public function __construct(?ContainerInterface $parent = null)
     {
         $this->parent = $parent;
         // Create an invoker
@@ -113,7 +113,7 @@ class Container implements ArrayAccess, ContainerInterface
         if (! isset($this->keys[$id])) {
             // maso, 2020: fetch from parent
             if (isset($this->parent)) {
-                return $this->parent[$id];
+                return $this->parent->get($id);
             }
             throw new UnknownIdentifierException($id);
         }
@@ -135,7 +135,11 @@ class Container implements ArrayAccess, ContainerInterface
      */
     public function offsetExists($id)
     {
-        return isset($this->keys[$id]);
+        $result = isset($this->keys[$id]);
+        if (! $result && isset($this->parent)) {
+            return $this->parent->has($id);
+        }
+        return $result;
     }
 
     /**
