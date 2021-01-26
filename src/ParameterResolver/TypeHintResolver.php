@@ -7,7 +7,9 @@ use ReflectionNamedType;
 /**
  * Inject entries using type-hints.
  *
- * Tries to match type-hints with the parameters provided.
+ * Tries to match type-hints with the parameters provided. 
+ * 
+ * This is called autowired in documents.
  *
  * @author Mostafa Barmshory<mostafa.barmshory@gmail.com>
  */

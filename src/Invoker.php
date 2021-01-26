@@ -13,12 +13,12 @@ use Psr\Container\ContainerInterface;
 
 /**
  * Invoke a callable.
- * 
+ *
  * Parameters may resolve with deffirent methods such as Container resolver.
- * 
+ *
  * @author Mostafa Barmshory<mostafa.barmshory@gmail.com>
  */
-class Invoker
+class Invoker implements InvokerInterface
 {
 
     /**
@@ -50,8 +50,15 @@ class Invoker
     }
 
     /**
+     * Calls a the callable
      *
-     * {@inheritdoc}
+     * @param callable $callable
+     *            to call
+     * @param array $parameters
+     *            parameter to resolve
+     * @throws NotCallableException
+     * @throws NotEnoughParametersException
+     * @return mixed the result of callable
      */
     public function call($callable, array $parameters = [])
     {

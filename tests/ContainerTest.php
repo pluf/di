@@ -6,6 +6,7 @@ use Pluf\Di\Container;
 use Pluf\Di\Exception\ExpectedInvokableException;
 use Pluf\Di\Exception\FrozenServiceException;
 use Pluf\Di\Exception\UnknownIdentifierException;
+use Pluf\Di\ContainerBuilder;
 
 /**
  *
@@ -29,6 +30,17 @@ class ContainerTest extends TestCase
             return new Fixtures\Service();
         };
 
+        $this->assertInstanceOf('Pluf\Tests\Fixtures\Service', $container['service']);
+    }
+    
+    public function testWithClosureWithBuilder()
+    {
+        $builder = new ContainerBuilder();
+        $container = $builder->build();
+        $container['service'] = function () {
+            return new Fixtures\Service();
+        };
+        
         $this->assertInstanceOf('Pluf\Tests\Fixtures\Service', $container['service']);
     }
 

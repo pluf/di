@@ -17,19 +17,24 @@ use InvalidArgumentException;
  *
  * @author Mostafa Barmshory<mostafa.barmshory@gmail.com>
  */
-class Container implements ArrayAccess, ContainerInterface
+class Container implements ArrayAccess, ContainerInterface, InvokerInterface
 {
 
-    private array $factories = [];
-
-    private array $frozen = [];
-
     /**
-     * Stores list of all keys in this container
+     * List of factories
      *
      * @var array
      */
-    private array $keys = [];
+    private array $factories = [];
+
+    /**
+     * Frozes the factory
+     *
+     * If a factory used, then it is forbiden to override it.
+     *
+     * @var array
+     */
+    private array $frozen = [];
 
     /**
      * Parent container is used to resolve services hericically.
@@ -37,6 +42,8 @@ class Container implements ArrayAccess, ContainerInterface
      * @var Container
      */
     private ?Container $parent = null;
+
+    private ?Container $root = null;
 
     /**
      * The invoker is used to call the factories
@@ -53,14 +60,27 @@ class Container implements ArrayAccess, ContainerInterface
      * @param array $values
      *            The parameters or objects
      */
-    public function __construct(?ContainerInterface $parent = null)
+    public function __construct(?Container $parent = null, ?Invoker $invoker = null)
     {
+        // set parent and root
         $this->parent = $parent;
+        if (!empty($this->parent)) {
+            $this->root = $this->parent->getRoot();
+        } else {
+            $this->root = $this;
+        }
+
         // Create an invoker
-        $this->internalInvoker = new Invoker(new ResolverChain([
-            new ParameterNameContainerResolver($this),
-            new DefaultValueResolver()
-        ]));
+        if (!empty($invoker)) {
+            $this->internalInvoker = $invoker;
+        } else {
+            if ($this->isRoot()) {
+                $this->internalInvoker = new Invoker(new ResolverChain([
+                    new ParameterNameContainerResolver($this),
+                    new DefaultValueResolver()
+                ]));
+            }
+        }
 
         // register the container as service
         $this->offsetSet('container', Container::value($this));
@@ -88,13 +108,12 @@ class Container implements ArrayAccess, ContainerInterface
             throw new FrozenServiceException($id);
         }
 
-        // TODO: maso, 2020: check the $value
         if (! is_callable($factory)) {
-            throw new ExpectedInvokableException('Factory is not a Closure or invokable object.');
+            // TODO: maso, 2021: set a message in class
+            throw new ExpectedInvokableException();
         }
 
         $this->factories[$id] = $factory;
-        $this->keys[$id] = true;
     }
 
     /**
@@ -110,16 +129,20 @@ class Container implements ArrayAccess, ContainerInterface
     public function offsetGet($id)
     {
         // Check if factory exist
-        if (! isset($this->keys[$id])) {
+        if (! array_key_exists($id, $this->factories)) {
             // maso, 2020: fetch from parent
-            if (isset($this->parent)) {
+            if (!empty($this->parent)) {
                 return $this->parent->get($id);
             }
+            // XXX: maso,2021: root class finder
+
+            // service not found
             throw new UnknownIdentifierException($id);
         }
 
         $factory = $this->factories[$id];
-        $val = $this->internalInvoker->call($factory);
+        $invoker = empty($this->internalInvoker) ? $this->root->internalInvoker :  $this->internalInvoker;
+        $val = $invoker->call($factory);
         // value is used and you are not allowd to overrid
         $this->frozen[$id] = true;
         return $val;
@@ -135,8 +158,8 @@ class Container implements ArrayAccess, ContainerInterface
      */
     public function offsetExists($id)
     {
-        $result = isset($this->keys[$id]);
-        if (! $result && isset($this->parent)) {
+        $result = isset($this->factories[$id]);
+        if (! $result && !empty($this->parent)) {
             return $this->parent->has($id);
         }
         return $result;
@@ -150,9 +173,14 @@ class Container implements ArrayAccess, ContainerInterface
      */
     public function offsetUnset($id)
     {
-        if (isset($this->keys[$id])) {
-            unset($this->factories[$id], $this->keys[$id], $this->frozen);
+        if (array_key_exists($id, $this->factories)) {
+            unset($this->factories[$id], $this->frozen[$id]);
         }
+    }
+
+    public function set($key, $value)
+    {
+        $this->offsetSet($key, $value);
     }
 
     /**
@@ -185,12 +213,70 @@ class Container implements ArrayAccess, ContainerInterface
         return array_keys($this->factories);
     }
 
+    /**
+     * Calls the callabel
+     *
+     * @param callable $callable
+     * @param array $parameters
+     * @return mixed the result of callabel
+     */
+    public function call($callable, array $parameters = [])
+    {
+        return $this->internalInvoker->call($callable, $parameters);
+    }
+
+    /**
+     * Injects to existed object
+     *
+     * @param mixed $object
+     */
+    public function injectOn($object)
+    {
+        // TODO:
+    }
+
+    /**
+     * Gets raw data of the service
+     *
+     * @param mixed $id
+     *            of hte object
+     * @throws UnknownIdentifierException
+     * @return Closure
+     */
     public function raw($id): Closure
     {
         if (! $this->has($id)) {
             throw new UnknownIdentifierException($id);
         }
         return $this->factories[$id];
+    }
+
+    public function isRoot(): bool
+    {
+        return empty($this->parent);
+    }
+
+    public function getRoot(): Container
+    {
+        return $this->root;
+    }
+
+    public function addFactory(string $id, Closure $factory): Container
+    {
+        $this->offsetSet($id, self::factory($factory));
+        return $this;
+    }
+
+    public function addService(string $id, Closure $factory): Container
+    {
+        $this->offsetSet($id, self::service($factory));
+        return $this;
+    }
+
+    public function addValue(string $id, $value): Container
+    {
+        $this->offsetSet($id, self::value($value));
+        return $this;
     }
 
     /**
