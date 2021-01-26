@@ -1,11 +1,7 @@
----
-layout: documentation
-current_menu: scopes
----
-
 # Scopes
 
-**Scopes have been removed in PHP-DI 6.** Read below for more explanations. From now on, all definitions are resolved once and their result is kept during the life of the container (i.e. what was called the `singleton` scope).
+**Scopes have been removed in PHP-DI 6.** Read below for more explanations. From now on, all definitions are resolved once 
+and their result is kept during the life of the container (i.e. what was called the `singleton` scope).
 
 Scopes were used to make the container work as a factory: instead of using scopes you can either:
 
@@ -86,4 +82,5 @@ return [
 ];
 ```
 
-Contrary to what one could think, if the `CONFIG_VAR` changes it will not be updated in places were it has already been injected before the change. Scopes are not a solution for values that can change during execution, yet they could be misinterpreted as such a solution.
+Contrary to what one could think, if the `CONFIG_VAR` changes it will not be updated in places were it has already been injected before the change. Scopes are not a 
+solution for values that can change during execution, yet they could be misinterpreted as such a solution.

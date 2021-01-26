@@ -1,11 +1,6 @@
----
-layout: documentation
-current_menu: lazy-injection
----
-
 # Lazy injection
 
-This feature should not be confused with lazy initialization of objects: **PHP-DI always creates objects only when they are requested or injected somewhere.**
+This feature should not be confused with lazy initialization of objects: **Pluf DI always creates objects only when they are requested or injected somewhere.**
 
 Lazy injection goes further than this: it allows to defer the creation of an object's dependencies to the moment when they are actually used, not before.
 
@@ -47,14 +42,14 @@ In this example the `exportToPdf()` is not called. `PdfWriter` is initialized an
 
 ## How it works
 
-If you define an object as "lazy", PHP-DI will inject:
+If you define an object as "lazy", DI will inject:
 
 - the object, if it has already been created
 - or else a **proxy** to the object, if it is not yet created
 
 The proxy is a special kind of object that **looks and behaves exactly like the original object**, so you can't tell the difference. The proxy will instantiate the original object only when needed.
 
-Creating a proxy is complex. For this, PHP-DI relies on [ProxyManager](https://github.com/Ocramius/ProxyManager), the (amazing) library used by Doctrine, Symfony and Zend.
+Creating a proxy is complex. For this, DI relies on [ProxyManager](https://github.com/Ocramius/ProxyManager), the (amazing) library used by Doctrine, Symfony and Zend.
 
 Let's illustrate that with an example. For the sake of simplicity we will not inject a lazy object but we will ask the container to return one:
 
@@ -85,7 +80,7 @@ You can define an object as "lazy". If it is injected as a dependency, then a pr
 
 ### Installation
 
-Lazy injection requires the [Ocramius/ProxyManager](https://github.com/Ocramius/ProxyManager) library. This library is not installed by default with PHP-DI, you need to require it:
+Lazy injection requires the [Ocramius/ProxyManager](https://github.com/Ocramius/ProxyManager) library. This library is not installed by default with DI, you need to require it:
 
 ````
 composer require ocramius/proxy-manager
@@ -128,7 +123,7 @@ While proxies are extremely optimized, they are only worth it if the object you 
 
 ## Optimizing performances
 
-PHP-DI needs to generate proxies of the classes you mark as "*lazy*".
+DI needs to generate proxies of the classes you mark as "*lazy*".
 
 By default those proxies are generated on every HTTP request, this is good for development but not for production.
 

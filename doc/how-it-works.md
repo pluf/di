@@ -1,15 +1,10 @@
----
-layout: documentation
-current_menu: how-it-works
----
+# How DI works
 
-# How PHP-DI works
-
-Do you want to help out improving PHP-DI? Or are you simply curious? Here is a short presentation of how PHP-DI works.
+Do you want to help out improving DI? Or are you simply curious? Here is a short presentation of how DI works.
 
 ## Global architecture
 
-The main component is the `Container` class. It is created by a `ContainerBuilder`, which is just a helper class.
+The main component is the `Container` class. It can be created by a `ContainerBuilder`, which is just a helper class.
 
 It is the entry point from the user's point of view, it is also the component that coordinates all other sub-components.
 
@@ -21,17 +16,20 @@ $entry = $container->get('entryName');
 
 A container instance has the following sub-components:
 
-- a `DefinitionSource` that returns a `Definition` for an entry name (by looking in several sub-definition sources)
-- a list of `DefinitionResolver` that take a `Definition` and resolve it to a value (f.e. if it's an object, it will create it)
+- a factory that build an entry
+- a invoker that resolves factory parameters.
+
+This is a PHP form of spring boot.
 
 ### Definitions
 
-A definition defines what an entry is:
+Pluf DI just supports `factory`, that build a new instance of entery on each call. However you may implement a factory that
+returns a constant value or a service.
 
-- **a simple value** (string, number, object instance…): `ValueDefinition`
-- **a factory/callable returning the value**: `FactoryDefinition`
-- **a definition of an entry alias**: `Reference`
-- **a definition of a class**: `ObjectDefinition`
-- **a definition of an environment variable**: `EnvironmentVariableDefinition`
+There are helper method to:
 
-The class definition describes how the container should create a class instance (what parameters the constructor takes, …).
+- Add factory
+- Add value
+- Add service
+
+The entry type describes how the factory should create a class instance (what parameters the constructor takes, …).

@@ -1,5 +1,7 @@
 # PHP 8 Attribuates (Annotations)
 
+NOTE: This part of Pluf DI is under construct. Do not use in production mode.
+
 On top of [autowiring](autowiring.md) and [PHP configuration files](php-definitions.md), you can define injections using annotations.
 
 Using annotations do not affect performances when [compiling the container](performances.md).

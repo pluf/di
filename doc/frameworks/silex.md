@@ -3,7 +3,8 @@
 ## Installation
 
 ```
-$ composer require php-di/silex-bridge
+$ composer require silex/silex
+$ composer require pluf/di
 ```
 
 ## Usage
