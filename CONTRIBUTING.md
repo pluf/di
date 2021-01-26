@@ -1,6 +1,6 @@
 # Contributing
 
-Pluf DI is licensed under the MIT License.
+Pluf DI is licensed under the GNU Public License V3.
 
 
 ## Set up
