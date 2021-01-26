@@ -36,54 +36,16 @@ class MyCommand
 }
 
 $app = new Silly\Application();
-$app->useContainer(new Container());
-$app->command('greet [name]', 'MyCommand');
-
+$container = new Continer();
+$container->addFactory(MyCommand::class, function(){
+	return new MyCommand();
+});
+$app->useContainer($container);
+$app->command('greet [name]', MyCommand::class);
 $app->run();
 ```
 
-PHP-DI will automatically create a new instance of `MyCommand` when the `greet` command is called.
-
-## Configuration
-
-You can configure PHP-DI by overridding the [`createContainer()`](https://github.com/mnapoli/silly-php-di/blob/master/src/Application.php#L29) method in your `Application` class:
-
-```php
-class MyApplication extends Silly\Edition\PhpDi\Application
-{
-    protected function createContainer()
-    {
-        $builder = ContainerBuilder::buildDevContainer();
-        
-        $builder->addDefinitions([
-            // add your PHP-DI config here
-        ]);
-        
-        return $builder->build(); // return the customized container
-    }
-}
-
-// In your main file you can now use your custom application class:
-$app = new MyApplication();
-```
-
-If you do not want to go through the trouble of creating a new class, you can use PHP 7's anonymous classes:
-
-```php
-$app = new class() extends Silly\Edition\PhpDi\Application
-{
-    protected function createContainer()
-    {
-        $builder = ContainerBuilder::buildDevContainer();
-        
-        $builder->addDefinitions([
-            // add your PHP-DI config here
-        ]);
-        
-        return $builder->build(); // return the customized container
-    }
-};
-```
+DI will automatically create a new instance of `MyCommand` when the `greet` command is called.
 
 ## Dependency injection in parameters
 
@@ -96,9 +58,11 @@ use Psr\Logger\LoggerInterface;
 
 $container = $app->getContainer();
 
-$container->set('dbHost', 'localhost');
+$container->addValue('dbHost', 'localhost');
 // Monolog's configuration is voluntarily skipped
-$container->set(LoggerInterface::class, DI\object('Monolog\Logger'));
+$container->addService(LoggerInterface::class, function(){
+	return new Monolog\Logger();
+});
 
 $app->command('greet [name]', function ($name, $dbHost, LoggerInterface $logger) {
     // ...
