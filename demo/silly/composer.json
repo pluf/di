@@ -1,0 +1,14 @@
+{
+    "name": "di-demo/silly",
+    "description": "A demo to show Pluf DI in silly",
+    "authors": [
+        {
+            "name": "Mostafa Barmshory",
+            "email": "mostafa.barmshory@gmail.com"
+        }
+    ],
+    "require": {
+        "mnapoli/silly": "^1.7",
+        "pluf/di": "^7.0"
+    }
+}

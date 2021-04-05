@@ -16,26 +16,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-namespace Pluf\Di\Exception;
+namespace Pluf\Di;
 
-use Psr\Container\NotFoundExceptionInterface;
-use InvalidArgumentException;
+use Pluf\Di\Exception\InvocationException;
+use Pluf\Di\Exception\NotCallableException;
+use Pluf\Di\Exception\NotEnoughParametersException;
 
 /**
- * An attempt to perform an operation that requires a service identifier was made.
- *
+ * Invoke a callable.
+ * 
  * @author Mostafa Barmshory<mostafa.barmshory@gmail.com>
  */
-class InvalidServiceIdentifierException extends InvalidArgumentException implements NotFoundExceptionInterface
+interface InvokerInterface
 {
 
     /**
+     * Call the given function using the given parameters.
      *
-     * @param string $id
-     *            The invalid identifier
+     * @param callable|array|string $callable
+     *            Function to call.
+     * @param array $parameters
+     *            Parameters to use.
+     * @return mixed Result of the function.
+     * @throws InvocationException Base exception class for all the sub-exceptions below.
+     * @throws NotCallableException
+     * @throws NotEnoughParametersException
      */
-    public function __construct($id)
-    {
-        parent::__construct(sprintf('Identifier "%s" does not contain an object definition.', $id));
-    }
+    public function call($callable, array $parameters = []);
 }
